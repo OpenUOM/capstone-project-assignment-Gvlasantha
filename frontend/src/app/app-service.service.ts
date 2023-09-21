@@ -5,7 +5,7 @@ import { environment } from './../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AppServiceService {
+export class StudentService {
 
   readonly ROOT_URL;
 
@@ -18,7 +18,7 @@ export class AppServiceService {
   }
 
   initializeDB(){
-    return this.http.get(`/${this.ROOT_URL}/dbinitialize`)
+    return this.http.get(`/${this.ROOT_URL}/digitalize`)
   }
 
   getTeacherData(){
