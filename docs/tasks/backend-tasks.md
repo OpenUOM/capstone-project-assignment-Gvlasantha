@@ -1,101 +1,174 @@
-const sqlite3 = require('sqlite3');
-
-let _DBConnection;
-
-const connectDatabase = async () => {
-  if (!_DBConnection) {
-    if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "test-backend") {
-      _DBConnection = new sqlite3.Database(":memory:", sqlite3.OPEN_READWRITE);
-    } else {
-      _DBConnection = new sqlite3.Database('./db.sqlite', sqlite3.OPEN_READWRITE);
+{
+  "tests": [
+    {
+      "name": "Backend List Teachers",
+      "setup": "npm install",
+      "run": "npm test -- -t 'GET /listTeachers should show all teachers'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Add Teacher",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /addTeacher should show a newly added teacher'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Edit Teacher",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /editTeacher should show a newly added teacher'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Delete Teacher",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /deleteTeacher should delete a teacher'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend List Students",
+      "setup": "npm install",
+      "run": "npm test -- -t 'GET /listStudents should show all students'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Add Student",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /addStudent should show a newly added student'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Edit Student",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /editStudent should edit a Student'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Backend Delete Student",
+      "setup": "npm install",
+      "run": "npm test -- -t 'POST /deleteStudent should delete a student'",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Dummy Test",
+      "setup": "npm install",
+      "run": "file=./test/dummy.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": null
+    },
+    {
+      "name": "Frontend Add Student",
+      "setup": "npm install",
+      "run": "file=./test/student-add.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Delete Student",
+      "setup": "npm install",
+      "run": "file=./test/student-delete.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Edit Student",
+      "setup": "npm install",
+      "run": "file=./test/student-edit.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Search Student",
+      "setup": "npm install",
+      "run": "file=./test/student-search.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Add Teacher",
+      "setup": "npm install",
+      "run": "file=./test/teacher-add.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Delete Teacher",
+      "setup": "npm install",
+      "run": "file=./test/teacher-delete.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Edit Teacher",
+      "setup": "npm install",
+      "run": "file=./test/teacher-edit.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
+    },
+    {
+      "name": "Frontend Search Teacher",
+      "setup": "npm install",
+      "run": "file=./test/teacher-search.test.js npm run test --prefix ./frontend",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 10
     }
-  }
-  return _DBConnection;
-};
-
-// Function to read all student data
-const readStudents = async () => {
-  const db = await connectDatabase();
-  return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM students", (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-};
-
-// Function to read information of a specified student
-const readStudentInfo = async (studentId) => {
-  const db = await connectDatabase();
-  return new Promise((resolve, reject) => {
-    db.get("SELECT * FROM students WHERE id = ?", [studentId], (err, row) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(row);
-      }
-    });
-  });
-};
-
-// Function to add a student
-const addStudent = async (studentData) => {
-  const db = await connectDatabase();
-  return new Promise((resolve, reject) => {
-    const { name, age, grade } = studentData;
-    db.run("INSERT INTO students (name, age, grade) VALUES (?, ?, ?)", [name, age, grade], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve('Student added successfully');
-      }
-    });
-  });
-};
-
-// Function to update details of a specific student
-const updateStudent = async (studentId, updatedData) => {
-  const db = await connectDatabase();
-  return new Promise((resolve, reject) => {
-    const { name, age, grade } = updatedData;
-    db.run("UPDATE students SET name = ?, age = ?, grade = ? WHERE id = ?", [name, age, grade, studentId], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve('Student updated successfully');
-      }
-    });
-  });
-};
-
-// Function to delete a specified student
-const deleteStudent = async (studentId) => {
-  const db = await connectDatabase();
-  return new Promise((resolve, reject) => {
-    db.run("DELETE FROM students WHERE id = ?", [studentId], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve('Student deleted successfully');
-      }
-    });
-  });
-};
-
-const closeConnection = () => {
-  if (_DBConnection) {
-    _DBConnection.close();
-  }
-};
-
-module.exports = {
-  readStudents,
-  readStudentInfo,
-  addStudent,
-  updateStudent,
-  deleteStudent,
-  closeConnection
-};
+  ]
+}
